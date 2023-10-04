@@ -14,6 +14,20 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contactsData = JSON.parse(localStorage.getItem('contact'));
+
+    if (contactsData) {
+      this.setState({ contacts: contactsData });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contact', JSON.stringify(this.state.contacts));
+    }
+  }
+
   onInputChange = event => {
     this.setState({ [event.target.name]: event.target.value.trim() });
   };
@@ -26,8 +40,18 @@ export class App extends Component {
         existingContact.name.toLowerCase() === contact.name.toLowerCase()
     );
 
+    const isDuplicateNumber = contacts.some(
+      existingNumber =>
+        existingNumber.number.toLowerCase() === contact.number.toLowerCase()
+    );
+
     if (isDuplicateName) {
       alert(`${contact.name} is already in contacts`);
+      return;
+    }
+
+    if (isDuplicateNumber) {
+      alert(`${contact.number} is already in contacts`);
       return;
     }
 

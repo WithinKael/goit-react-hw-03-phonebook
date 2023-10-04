@@ -8,15 +8,15 @@ export class ContactForm extends Component {
   };
 
   onInputChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value.trim() });
   };
 
   onBtnSubmit = event => {
     event.preventDefault();
     const { name, number } = this.state;
 
-    if (name === '') {
-      alert('Enter your name');
+    if (name === '' || number === '') {
+      alert('Enter your data');
       return;
     }
 
